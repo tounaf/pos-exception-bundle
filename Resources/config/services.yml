@@ -1,0 +1,31 @@
+services:
+    _defaults:
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+#        bind:
+#            $titleProject: 'POS API'
+    POS\ExceptionBundle\:
+        resource: '../../'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../{Entity,Repository,Tests}'
+
+    pos.base_service:
+        class: POS\ExceptionBundle\Service\BaseService
+        abstract: true
+        arguments: ['@service_container','@doctrine.orm.default_entity_manager','@logger']
+
+    POS\ExceptionBundle\Exception\PosExceptionRegistry:
+        arguments:
+            - !tagged pos.core_exception
+    POS\ExceptionBundle\Exception\Handler\Pos\PosGeneralExceptionInterface: '@POS\ExceptionBundle\Exception\Handler\Pos\PosGeneraleExceptionHandler'
+
+    POS\ExceptionBundle\Exception\Handler\Pos\PosGeneraleLoggerExceptionHandler:
+        decorates: 'POS\ExceptionBundle\Exception\Handler\Pos\PosGeneraleExceptionHandler'
+        arguments: ['@POS\ExceptionBundle\Exception\Handler\Pos\PosGeneraleLoggerExceptionHandler.inner', '@logger']
+        decoration_priority: 1
+        public: false

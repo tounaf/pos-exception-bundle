@@ -1,0 +1,18 @@
+{
+    "name": "fetra/pos-exception-bundle",
+    "description": "Handler for exception used by pos",
+    "type": "symfony-bundle",
+    "autoload": {
+        "psr-4": {
+            "POS\\ExceptionBundle\\": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "codev",
+            "email": "fetra.harinjatovo@pulse.mg"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
